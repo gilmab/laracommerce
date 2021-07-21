@@ -245,7 +245,7 @@
             
         </div>
  
-        <form name="paymentform" id="paymentform" action="{{url('/place-order')}}">
+        <form name="paymentform" id="paymentform" action="{{url('/place-order')}}" method="post">
             <input type="hidden" value="{{$grand_total}}" name="grand_total">
             <hr class="mb-4">
             <div class="title-left">
@@ -257,7 +257,7 @@
                         <label class="custom-control-label" for="crédit"> Cash on delivery  </label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="checkbox" id="debit" value="paypal" name="paymentMethod"  class="custom-control-input paypal" required>
+                        <input type="checkbox" id="debit" value="paypal" name="paymentMethod"  class="custom-control-input paypal"   >
                         <label class="custom-control-label" for="debit"> paypal </label>
                     </div>
                     <div class="col-12  d-flex shopping-box">

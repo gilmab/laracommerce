@@ -119,7 +119,13 @@
       });
 
       function selectPaymentMethod(){
-         alert('test')
+         if($('.paypal').is(':checked') || $('.cod').is(':checked')){
+           alert('checked')
+         }else {
+           alert('please Select Payment Method') ; 
+           return false ; 
+         }
+
       }
 
     </script>

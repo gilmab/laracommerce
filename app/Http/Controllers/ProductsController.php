@@ -464,4 +464,7 @@ public function orderReview(){
     return view('wayshop.products.order_review')->with(compact('userDetails', 'countries','shippingDetail','userCart')) ; 
 }
 
+public function placeorder(Request $request ){
+       echo "jjjj" ;
+}
 }
