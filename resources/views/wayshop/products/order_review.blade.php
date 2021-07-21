@@ -253,12 +253,15 @@
             </div>
             <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="debit" name="paymentMethod"  class="custom-control-input" required>
+                        <input id="debit" name="paymentMethod" value="cod"  type="radio"  class="custom-control-input cod" required>
                         <label class="custom-control-label" for="crédit"> Cash on delivery  </label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="checkbox" id="debit" name="paymentMethod"  class="custom-control-input" required>
-                        <label class="custom-control-label" for="debit"> Direct bank transfert</label>
+                        <input type="checkbox" id="debit" value="paypal" name="paymentMethod"  class="custom-control-input paypal" required>
+                        <label class="custom-control-label" for="debit"> paypal </label>
+                    </div>
+                    <div class="col-12  d-flex shopping-box">
+                        <button type="submit" class="ml-auto btn hvr-hover" onclick="return selectPaymentMethod();" style="color:white;">Place order </button>
                     </div>
             </div>
         
@@ -271,4 +274,4 @@
 
 
 
-@endsection 
+@endsection  

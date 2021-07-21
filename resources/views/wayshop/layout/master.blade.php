@@ -118,6 +118,10 @@
 
       });
 
+      function selectPaymentMethod(){
+         alert('test')
+      }
+
     </script>
 </body>
 
