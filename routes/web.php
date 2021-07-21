@@ -43,7 +43,10 @@ Route::group(['middleware' => ['frontlogin']], function(){
 
   Route::match(['get','post'] , '/change-addresss', 'UsersController@changeAddress'); 
 
-  Route::match(['get','post'] , '/checkout', 'ProductsController@checkout'); 
+  Route::match(['get','post'] , '/checkout', 'ProductsController@checkout');
+  
+  Route::match(['get','post'] , '/order-review', 'ProductsController@orderReview'); 
+
 
 
 
@@ -68,9 +71,9 @@ Route::match(['get','post'],'/cart/apply-coupon', 'ProductsController@applycoupo
 Route::match( ['get','post'], '/admin' , 'AdminController@login') ; 
 
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'IndexController@index')->name('home');
 
 //Route::get('/admin/category', 'CategoryController@viewcat') ; 
 

@@ -21,44 +21,64 @@
 <strong> {!! session('flash_message_success') !!} </strong>
 </div>
 @endif
-			  <form action="{{url('/user-registrer')}}" id="contactForm registerForm" method="POST"> {{csrf_field()}}
+  
+  <form action="{{url('/checkout')}}" id="contactForm registerForm" method="POST"> {{csrf_field()}}
             <div class="row">
                 <div class="col-lg-6 col-sm-12">
                         <div class="contact-form-right">
                                 <h2> Billing  </h2>
                               
                                     <div class="row">
+                                        <div class="col-md-12"> 
+                                                <div class="form-group">
+                                                        <input type="text" class="form-control" @if(!empty($userDetails->name)) value="{{$userDetails->name}}" @endif id="billing_name" name="billing_name" required="required" data-error="Please enter your name"> 
+                                                        <div class="help-block with-errors"> </div>
+                                                </div>
+                                         </div>
+
                                          <div class="col-md-12"> 
                                                 <div class="form-group">
-                                                        <input type="text" class="form-control" placeholder="Billing city" id="billing_city" name="billing_city" required="required" data-error="Please enter your name"> 
+                                                        <input type="text" class="form-control" @if(!empty($userDetails->address)) value="{{$userDetails->address}}" @endif id="billing_address" name="billing_address" required="required" data-error="Please enter your name"> 
+                                                        <div class="help-block with-errors"> </div>
+                                                </div>
+                                         </div>
+
+                                         <div class="col-md-12"> 
+                                                <div class="form-group">
+                                                        <input type="text" class="form-control" @if(!empty($userDetails->city)) value="{{$userDetails->city}}" @endif id="billing_city" name="billing_city" required="required" data-error="Please enter your name"> 
                                                         <div class="help-block with-errors"> </div>
                                                 </div>
                                          </div>   
 
                                          <div class="col-md-12"> 
                                             <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Billing state" id="billing_state" name="billing_state" required="required" data-error="Please enter your email"> 
+                                                    <input type="text" class="form-control" @if(!empty($userDetails->state)) value="{{$userDetails->state}}" @endif id="billing_state" name="billing_state" required="required" data-error="Please enter your email"> 
                                                     <div class="help-block with-errors"> </div>
                                             </div>
                                         </div>  
 
-                                     <div class="col-md-12"> 
+                                        <div class="col-md-12"> 
+                                                <div class="form-group">
+                                                        <select name="billing_country"  id="billing_country" class="form-control" >
+                                                            <option value="1">Select Country </option>
+                                                            @foreach ($countries as $country)
+                                            <option value="{{$country->country_name}}" @if(!empty($userDetails->country) && $country->country_name == $userDetails->country) selected @endif> {{$country->country_name}} </option>                    
+                                                            @endforeach
+                                                        </select>
+                                                        
+                                                </div>
+                                            </div> 
+									
+									<div class="col-md-12"> 
                                         <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Billing country" id="billing_country" name="billing_country" required="required" data-error="Please enter your password"> 
+                                                <input type="text" class="form-control" @if(!empty($userDetails->pincode)) value="{{$userDetails->pincode}}"  @endif id="billing_pincode" name="billing_pincode" required="required" data-error="Please enter your password"> 
                                                 <div class="help-block with-errors"> </div>
                                         </div>
                                     </div> 
 									
 									<div class="col-md-12"> 
                                         <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Billing pincode" id="billing_pincode" name="billing_pincode" required="required" data-error="Please enter your password"> 
-                                                <div class="help-block with-errors"> </div>
-                                        </div>
-                                    </div> 
-									
-									<div class="col-md-12"> 
-                                        <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Billing mobile" id="billing_mobile" name="billing_mobile" required="required" data-error="Please enter your password"> 
+                                                <input type="text" class="form-control"  id="billing_mobile" @if(!empty($userDetails->mobile)) value="{{$userDetails->mobile }}"  @endif name="billing_mobile" required="required" data-error="Please enter your password"> 
                                                 <div class="help-block with-errors"> </div>
                                         </div>
                                     </div> 
@@ -66,7 +86,7 @@
 									
 									<div class="col-md-12" style="margin-left:30px ;"> 
                                         <div class="form-group">
-                                                <input type="checkbox" class="form-check-input" id="bill_to_ship" name="billing_mobile" required="required" data-error="Please enter your password"> 
+                                                <input type="checkbox" class="form-check-input" id="bill_to_ship" name="billing_mobile" data-error="Please enter your password"> 
                                                <label class="form-check-label" for="billtoship"> Shipping address same as billing address </label>
                                         </div>
                                     </div> 
@@ -86,6 +106,19 @@
                    
                         <div class="row">
                               
+                                <div class="col-md-12"> 
+                                        <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Shipping name" id="shipping_name" name="shipping_name" required="required" data-error="Please enter your email"> 
+                                                <div class="help-block with-errors"> </div>
+                                        </div>
+                                    </div>  
+
+                                    <div class="col-md-12"> 
+                                        <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Shipping address" id="shipping_address" name="shipping_address" required="required" data-error="Please enter your email"> 
+                                                <div class="help-block with-errors"> </div>
+                                        </div>
+                                    </div>  
 
                              <div class="col-md-12"> 
                                 <div class="form-group">
@@ -101,10 +134,15 @@
                             </div>
                         </div> 
 						
-						 <div class="col-md-12"> 
+			<div class="col-md-12"> 
                             <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Shipping country" id="shipping_country" name="shipping_country" required="required" data-error="Please enter your password"> 
-                                    <div class="help-block with-errors"> </div>
+                                    <select  name="shipping_country" id="shipping_country" class="form-control" >
+                                        <option value="1">Select Country </option>
+                                        @foreach ($countries as $country)
+                        <option value="{{$country->country_name}}" @if(!empty($userDetails->country) && $country->country_name == $userDetails->country) selected @endif> {{$country->country_name}} </option>                    
+                                        @endforeach
+                                    </select>
+                                    
                             </div>
                         </div> 
 						

@@ -11,9 +11,12 @@ use App\Category ;
 use App\Productattributes ; 
 use DB ; 
 use App\Productsimages ; 
+use Auth ; 
+use App\User ;
+use App\Country ;   
 use App\Coupons ; 
 use Session;
-
+use App\DeliveryAddress ; 
 class ProductsController extends Controller
 
 {
@@ -259,8 +262,15 @@ class ProductsController extends Controller
     }
 
 public function addtoCart(Request $request) {
-    
+    Session::forget('CouponAmount') ;
+    Session::forget('Coupon') ; 
+
     $data = $request->all() ; 
+    if(empty(Auth::user()->email)){
+            $data['user_email'] = '' ; 
+    }else {
+        $data['user_email'] = Auth::user()->email ;
+    }
    
     $session_id = Session::get('session_id') ; 
    if(empty($session_id)){
@@ -294,7 +304,10 @@ public function addtoCart(Request $request) {
 }
 
 public function cart(Request $request) {
-    
+        if(Auth::check()){
+            $user_email = Auth::user()->email ; 
+            $userCart = DB::table('cart')->where(['user_email'=>$user_email])->get() ; 
+        }
         $session_id = Session::get('session_id') ; 
         $usercart = DB::table('cart')->where(['session_id'=>$session_id])->get() ; 
         foreach($usercart as $key=>$product){
@@ -370,8 +383,85 @@ public function applycoupon(Request $request) {
 }
 
 
-public function checkout() {
-    return view('wayshop.products.checkout') ; 
+public function checkout(Request $request) {
+
+    $user_id = Auth::User()->id ; 
+    $user_email =  Auth::user()->email ; 
+
+    $userDetails = User::find($user_id) ;
+    $countries = Country::get() ; 
+    // Check if shiiping address exist 
+    $ShippingCount = DeliveryAddress::where('user_id', $user_id)->count() ; 
+    $shippingDetail = DeliveryAddress::where('user_id', $user_id)->first() ; 
+    
+    if($ShippingCount > 0){
+      $shippingDetail = DeliveryAddress::where('user_id', $user_id)->first() ;
+    }
+    // Update cart with email 
+    $session_id = Session::get('session_id') ; 
+    DB::table('cart')->
+    where(['session_id'=>$session_id])->update(['user_email'=>$user_email]) ;
+
+    
+    if($request->isMethod('post')){
+        $data = $request->all() ; 
+        //echo "<pre>" ; print_r($data) ; die() ; 
+        //Update Users Details
+        User::where('id',$user_id)->update([
+            'name'=>$data['billing_name'],
+            'address' => $data['billing_address'],
+            'state' => $data['billing_state'],
+            'city' => $data['billing_city'],
+            'country' => $data['billing_country'] , 
+             'pincode' => $data['billing_pincode'],
+             'mobile' => $data['billing_mobile']
+            ]) ;
+            if($ShippingCount > 0){
+           // Updatig shipping address
+           DeliveryAddress::where('user_id',$user_id)->update([
+                    'name'=>$data['shipping_name'],
+                    'address' => $data['shipping_address'],
+                    'state' => $data['shipping_state'],
+                    'city' => $data['shipping_city'],
+                    'country' => $data['shipping_country'] , 
+                     'pincode' => $data['shipping_pincode'],
+                     'mobile' => $data['shipping_mobile']
+                    ]) ;
+            } else{
+                //New shipping address 
+                $shipping = new DeliveryAddress ; 
+                $shipping->user_id = $user_id ; 
+                $shipping->user_email = $user_email ; 
+                $shipping->name = $data['shipping_name'] ; 
+                $shipping->address = $data['shipping_address'] ; 
+                $shipping->city = $data['shipping_city'] ; 
+                $shipping->state = $data['shipping_state'] ; 
+                $shipping->country = $data['shipping_country'] ; 
+                $shipping->pincode = $data['shipping_pincode'] ; 
+                $shipping->mobile = $data['shipping_mobile'] ;
+                $shipping->save() ;  
+
+            }
+           return redirect()->action('ProductsController@orderReview') ;
+    }
+    return view('wayshop.products.checkout')->with(compact('userDetails', 'countries')) ; 
+}
+
+public function orderReview(){
+    $user_id = Auth::User()->id ; 
+    $user_email =  Auth::user()->email ; 
+    
+    $userDetails = User::find($user_id) ;
+    $countries = Country::get() ; 
+    // Check if shiiping address exist 
+    $userCart = DB::table('cart')->where(['user_email'=>$user_email])->get() ; 
+    foreach($userCart as $key=>$product){
+        $productDetails = Products::where('id', $product->product_id)->first() ; 
+        $userCart[$key]->image = $productDetails->image ; 
+    }
+
+    $shippingDetail = DeliveryAddress::where('user_id', $user_id)->first() ; 
+    return view('wayshop.products.order_review')->with(compact('userDetails', 'countries','shippingDetail','userCart')) ; 
 }
 
 }
