@@ -11,6 +11,7 @@ use App\Category ;
 use App\Productattributes ; 
 use DB ; 
 use App\Productsimages ; 
+use App\Orders ; 
 use Auth ; 
 use App\User ;
 use App\Country ;   
@@ -359,6 +360,13 @@ public function applycoupon(Request $request) {
                     $session_id = Session::get('session_id') ; 
                     $usercart = DB::table('cart')->where(['session_id' => $session_id])->get() ; 
 
+                    if(Auth::check()){
+                        $user_email = Auth::user()->email ; 
+                        $usercart = DB::table('cart')->where(['user_email'=>$user_email])->first() ; 
+                    }else {
+                        $session_id = Session::get('session_id') ; 
+                        $usercart = DB::table('cart')->where(['session_id'=> $session_id])->get() ; 
+                    }
                     $total_amount = 0 ;
 
                     foreach($usercart as $item){
@@ -470,10 +478,40 @@ public function placeorder(Request $request ){
            $user_email = Auth::user()->email ; 
            $data = $request->all() ;  
            
+           
            // get shipping detail 
            $shippingdetail = DeliveryAddress::where(['user_email'=> $user_email])->first() ; 
-           echo "<pre>" ; print_r($shippingdetail) ; die() ; 
-           //echo "<pre>"; print_r($data) ; die() ; 
+           //echo "<pre>" ; print_r($shippingdetail) ; die() ; 
+           //echo "<pre>"; print_r($data) ; die() ;
+           if(empty($data['coupon_code'])){
+                $data['coupon_code'] = '' ; 
+           }
+           if(empty($data['coupon_amount'])){
+               $data['coupon_amount'] = '' ; 
+           }
+           
+
+           $order = new Orders ; 
+           $order->user_id = $user_id ; 
+           $order->user_email = $user_email ;
+           $order->name = $shippingdetail->name ;
+           $order->address = $shippingdetail->address ; 
+           $order->city = $shippingdetail->city ;
+           $order->state = $shippingdetail->state ;
+           $order->pincode = $shippingdetail->pincode ;
+           $order->country = $shippingdetail->country ;
+           $order->mobile = $shippingdetail->mobile ;
+           $order->shipping_address = $shippingdetail->address ;
+           $order->coupon_code = $data['coupon_code'] ; 
+           $order->coupon_amount =$data['coupon_amount'] ;
+           $order->order_status =  "Now" ; 
+           $order->payment_method = $data['paymentMethod'] ;
+           $order->grand_total = $data['grand_total'] ; 
+           $order->save() ; 
+          
+           
+
+
            
        }
 }
