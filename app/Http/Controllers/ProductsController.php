@@ -544,6 +544,13 @@ public function Thanks(){
     DB::table('cart')->where('user_email', $user_email)->delete(); 
     return view('wayshop.orders.thanks') ; 
 }
+public function UseOrders() {
+    $user_id = Auth::user()->id ; 
+    $orders = Orders::with('orders')->where('user_id',$user_id)->orderBy('id','DESC')->get() ;
+
+    //echo "<pre>"; print_r($orders); die() ; 
+
+    return view('wayshop.products.users_orders')->with(compact('orders')) ;
+}
 
 }
- 
