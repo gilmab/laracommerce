@@ -533,12 +533,13 @@ public function placeorder(Request $request ){
 
            }
 
-
-
-
-
            
        }
 }
+
+public function Thanks(){
+    return view('wayshop.orders.thanks')
+}
+
 }
  
