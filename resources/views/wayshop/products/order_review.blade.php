@@ -245,7 +245,7 @@
             
         </div>
  
-        <form name="paymentform" id="paymentform" action="{{url('/place-order')}}" method="post">
+        <form name="paymentform" id="paymentform" action="{{url('/place-order')}}" method="post"> {{ csrf_field() }}
             <input type="hidden" value="{{$grand_total}}" name="grand_total">
             <hr class="mb-4">
             <div class="title-left">
@@ -253,7 +253,7 @@
             </div>
             <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input id="debit" name="paymentMethod" value="cod"  type="radio"  class="custom-control-input cod" required>
+                        <input id="debit" name="paymentMethod" value="cod"  type="radio"  class="custom-control-input cod"> 
                         <label class="custom-control-label" for="crédit"> Cash on delivery  </label>
                     </div>
                     <div class="custom-control custom-radio">

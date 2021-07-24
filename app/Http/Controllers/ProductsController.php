@@ -465,6 +465,17 @@ public function orderReview(){
 }
 
 public function placeorder(Request $request ){
-       echo "jjjj" ;
+       if($request->isMethod('post')){
+           $user_id = Auth::user()->id ; 
+           $user_email = Auth::user()->email ; 
+           $data = $request->all() ;  
+           
+           // get shipping detail 
+           $shippingdetail = DeliveryAddress::where(['user_email'=> $user_email])->first() ; 
+           echo "<pre>" ; print_r($shippingdetail) ; die() ; 
+           //echo "<pre>"; print_r($data) ; die() ; 
+           
+       }
 }
 }
+ 
