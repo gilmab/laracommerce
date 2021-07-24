@@ -486,7 +486,7 @@ public function placeorder(Request $request ){
            //echo "<pre>"; print_r($data) ; die() ;
            
            if(empty(Session::get('CouponCode'))){
-               $coupon_code = '' ; 
+               $coupon_code = 'Not Used ' ; 
            }
            if(empty(Session::get('CouponAmount'))){
                $couponAmount = '' ; 
@@ -533,11 +533,15 @@ public function placeorder(Request $request ){
 
            }
 
-           
-       }
+           Session::put('order_id',$order_id) ; 
+           Session::put('grand_total',$data['grand_total']) ;
+           return redirect('/thanks') ; 
+       } 
 }
 
 public function Thanks(){
+    $user_email = Auth::user()->email ; 
+    DB::table('cart')->where('user_email', $user_email)->delete(); 
     return view('wayshop.orders.thanks') ; 
 }
 
