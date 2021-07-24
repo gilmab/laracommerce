@@ -17,6 +17,7 @@ use App\User ;
 use App\Country ;   
 use App\Coupons ; 
 use Session;
+use App\OrdersProduct;
 use App\DeliveryAddress ; 
 class ProductsController extends Controller
 
@@ -483,13 +484,16 @@ public function placeorder(Request $request ){
            $shippingdetail = DeliveryAddress::where(['user_email'=> $user_email])->first() ; 
            //echo "<pre>" ; print_r($shippingdetail) ; die() ; 
            //echo "<pre>"; print_r($data) ; die() ;
-           if(empty($data['coupon_code'])){
-                $data['coupon_code'] = '' ; 
-           }
-           if(empty($data['coupon_amount'])){
-               $data['coupon_amount'] = '' ; 
-           }
            
+           if(empty(Session::get('CouponCode'))){
+               $coupon_code = '' ; 
+           }
+           if(empty(Session::get('CouponAmount'))){
+               $couponAmount = '' ; 
+           }else {
+               $couponAmount = Session::get('CouponAmoount') ; 
+
+           }
 
            $order = new Orders ; 
            $order->user_id = $user_id ; 
@@ -502,14 +506,35 @@ public function placeorder(Request $request ){
            $order->country = $shippingdetail->country ;
            $order->mobile = $shippingdetail->mobile ;
            $order->shipping_address = $shippingdetail->address ;
-           $order->coupon_code = $data['coupon_code'] ; 
-           $order->coupon_amount =$data['coupon_amount'] ;
+           $order->coupon_code = $coupon_code ; 
+           $order->coupon_amount =$couponAmount ;
            $order->order_status =  "Now" ; 
            $order->payment_method = $data['paymentMethod'] ;
            $order->grand_total = $data['grand_total'] ; 
            $order->save() ; 
           
-           
+           $order_id = DB::getPdo()->lastinsertID() ;
+
+           $catProducts = DB::table('cart')->where(['user_email' => $user_email])->get() ;
+
+           foreach($catProducts as $pro){
+               $cartprod = new OrdersProduct ; 
+               $cartprod->order_id = $order_id ; 
+               
+               $cartprod->user_id = $user_id ; 
+               $cartprod->product_id = $pro->product_id ; 
+               $cartprod->product_code = $pro->product_color ; 
+               $cartprod->product_name = $pro->product_name  ;
+               $cartprod->product_size = $pro->size; 
+               $cartprod->product_price = $pro->price ; 
+               $cartprod->product_qty = $pro->quantity ;
+               $cartprod->save() ; 
+
+
+           }
+
+
+
 
 
            
