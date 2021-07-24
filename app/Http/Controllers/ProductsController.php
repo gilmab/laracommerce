@@ -553,4 +553,13 @@ public function UseOrders() {
     return view('wayshop.products.users_orders')->with(compact('orders')) ;
 }
 
+public function OrderDetails($order_id){
+
+    $orderDetails = Orders::with('orders')->where('id',$order_id)->first() ;
+    
+$user_id =  $orderDetails->user_id; 
+$userDetails = User::where('id', $user_id)->first() ; 
+return view('wayshop.users.user_order_detail')->with(compact('orderDetails', 'userDetails')) ; 
+
+}
 }

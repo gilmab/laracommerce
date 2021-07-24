@@ -41,21 +41,14 @@
                     </thead>
                     <tbody> 
                         <tr>
-                            @foreach ($orders as $order)
+                            @foreach ($orderDetails->orders as $pro)
                                 
-                           <td> {{$order->id}}</td>
-                          
-                            <td>
-                                 @foreach($order->orders as $pro)
-                                    <a href="{{url('/orders/'.$order->id)}}">
-                                        {{$pro->product_code}}
-                                        ({{$pro->product_qty}})
-                                    </a>
-                                 @endforeach
-                            </td>
-                            <td> {{$order->payment_method}} </td>
-                            <td> {{$order->grand_total}} </td>
-                            <td> {{ $order->created_at}} </td>
+                                 
+                            <td> {{$pro->product_name}} </td>
+                            <td> {{$pro->product_size}} </td>
+                            <td> {{$pro->product_price}} </td>
+                            <td> {{$pro->product_price}} </td>
+                            <td> {{ $pro->created_at}} </td>
                             <td> view details </td>
 
                             
