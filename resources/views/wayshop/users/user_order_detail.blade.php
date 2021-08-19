@@ -30,9 +30,9 @@
                 <table class="table table-striped table-bordered" style="width: 100%"> 
                     <thead>
                         <tr>
-                            <th> Order ID</th>
-                            <th> Ordered Product </th>
-                            <th> Payment Method </th>
+                            <th> Order NAME</th>
+                            <th> Order SIZE </th>
+                            <th> PRICE </th>
                             <th> Grand Total </th>
                             <th> Date  </th>
                             <th>  Action </th>

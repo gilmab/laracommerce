@@ -34,9 +34,8 @@
                             <th> Ordered Product </th>
                             <th> Payment Method </th>
                             <th> Grand Total </th>
-                            <th> Date  </th>
-                            <th>  Action </th>
-                         
+                            <th> Created On  </th>
+                        
                         </tr>
                     </thead>
                     <tbody> 
@@ -50,7 +49,7 @@
                                     <a href="{{url('/orders/'.$order->id)}}">
                                         {{$pro->product_code}}
                                         ({{$pro->product_qty}})
-                                    </a>
+                                    </a><br> 
                                  @endforeach
                             </td>
                             <td> {{$order->payment_method}} </td>
