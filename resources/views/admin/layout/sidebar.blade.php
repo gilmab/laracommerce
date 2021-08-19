@@ -55,7 +55,7 @@
             </span>
             </a>
             <ul class="treeview-menu">
-               <li><a href="{{url('/admin/add-coupon')}}">Add Coupon </a></li>
+               <li><a href="{{url('admin/orders')}}">Add Coupon </a></li>
                <li><a href="{{url('/admin/view-coupon')}}"> View Coupon </a></li>    
             </ul>
          </li>

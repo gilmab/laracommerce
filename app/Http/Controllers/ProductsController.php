@@ -561,5 +561,17 @@ $user_id =  $orderDetails->user_id;
 $userDetails = User::where('id', $user_id)->first() ; 
 return view('wayshop.users.user_order_detail')->with(compact('orderDetails', 'userDetails')) ; 
 
+    }
+
+
+public function viewOrders(){   
+
+    return view('admin.orders.view_orders') ; 
+
 }
+
+
+
+
 }
+ 

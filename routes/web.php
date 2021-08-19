@@ -146,6 +146,10 @@ Route::group(['middleware' =>['auth']], function(){
 
     Route::match(['get', 'post'], '/admin/orders' , 'ProductsController@viewOrders') ; 
    
+          //Orders Route 
+      
+  Route::match(['get', 'post'], '/admin/orders' , 'ProductsController@viewOrders') ; 
+
 
 
 }) ; 
