@@ -58,29 +58,31 @@
                             </tr>
                          </thead>
                          <tbody>
-                     @if(!empty($coupons))
-                     @foreach ($coupons as $coupon)
+                   
+                     @foreach ($orders as $order)
                          
                             <tr>
-                              <td> {{$coupon->id }} </td>
-                               <td> {{$coupon->coupon_code }}  </td>
-                               <td> {{$coupon->amount }}  </td>
-                               @if($coupon->amount_type =="Percentage") % @else PKR @endif
-                               <td> {{$coupon->amount_type }}  </td>
-                              <td> {{$coupon->expiry_date}} </td>
+                              <td> {{$order->id }} </td>
+                               <td> {{$order->created_at }}  </td>
+                               <td> {{$order->name }}  </td>
+                               <td> {{$order->user_email }}  </td>
+                              
                             
-                              <td> {{ $coupon->created_at}}  </td>
-                               <td>
-                                tt
+                              <td>
+                                  @foreach($order->orders as $pro)
+                                   {{ $pro->product_code}} 
+                                   {{ $pro->product_qty}}
+                                   @endforeach
                               </td>
-                                                           
+                              <td> {{$order->grand_total}} </td>
+                              <td> {{$order->order_status}} </td>
+                              <td> {{$order->payment_method }} </td>
                                <td>
-                                  <a href="{{url('/admin/edit-coupons/'.$coupon->id)}}" class="btn btn-add btn-sm" ><i class="fa fa-pencil"></i></a>
-                                  <a  href="{{url('/admin/delete-coupons/'.$coupon->id)}}" class="btn btn-danger btn-sm" ><i class="fa fa-trash-o"></i> </a>
+                                 
                                </td>
                             </tr>
                             @endforeach
-                            @endif
+                           
                          </tbody>
                       </table>
                    </div>

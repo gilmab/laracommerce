@@ -76,7 +76,7 @@ class ProductsController extends Controller
 
     public function viewProduct() {
 
-        $product = Products::get() ; 
+        $product = Products::paginate(2) ; 
         return view('admin.products.view_product')->with(compact('product')) ; 
     }
 
@@ -565,11 +565,14 @@ return view('wayshop.users.user_order_detail')->with(compact('orderDetails', 'us
 
 
 public function viewOrders(){   
-
-    return view('admin.orders.view_orders') ; 
+    $orders = Orders::with('orders')->orderBy('id','DESC')->get() ; 
+    return view('admin.orders.view_orders')->with(compact('orders')) ;  
 
 }
 
+public function stripe(){
+   return view('wayshop.orders.stripe') ; 
+}
 
 
 

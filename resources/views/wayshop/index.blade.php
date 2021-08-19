@@ -131,9 +131,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @endforeach
+										 @endforeach
+                                       
                                     </div>
-                                   
+                                    {{ $products->links() }}
+                                       
                                 </div>
                                 
                             </div>

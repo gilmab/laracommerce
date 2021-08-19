@@ -11,7 +11,7 @@ class IndexController extends Controller
     public function index(){
         $banners = Banners::get() ;
         $categories = Category::with('categories')->where(['parent_id'=>0])->get() ;
-        $products = Products::get() ;  
+        $products = Products::paginate(2) ;  
         return view('wayshop.index')->with(compact('banners', 'categories', 'products')) ; 
     }
 
